@@ -13,7 +13,7 @@ export default function Home() {
           </p>
         </div>
         <div>
-          <button className=" px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap">
+          <button className=" px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
             Let’s begin!
           </button>
         </div>

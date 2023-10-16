@@ -1,3 +1,6 @@
+import Login from "@/components/Login";
+import Register from "@/components/Register";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
@@ -17,16 +20,9 @@ export default function Home() {
             Let’s begin!
           </button>
         </div>
-        <div>
-          <input
-            type="text"
-            className="block w-full rounded border-2 p-1.5 mt-12 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
-            placeholder="Game name"
-          />
-        </div>
       </div>
-      {/* <Login />
-      <Register /> */}
+      <Login />
+      <Register />
     </main>
   );
 }

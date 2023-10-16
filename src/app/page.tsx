@@ -1,5 +1,5 @@
-import Login from "@/components/Login";
-import Register from "@/components/Register";
+import Quiz from "@/components/Quiz";
+import Signupin from "@/components/SignUpIn";
 
 export default function Home() {
   return (
@@ -21,8 +21,8 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <Login />
-      <Register />
+      <Signupin />
+      <Quiz />
     </main>
   );
 }

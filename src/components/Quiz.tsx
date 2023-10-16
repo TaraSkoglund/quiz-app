@@ -1,0 +1,38 @@
+const Quiz = () => {
+  return (
+    <div className="flex flex-col items-center">
+      <h2 className="my-16 text-base md:text-2xl">
+        Where is the North Star in the night sky?
+      </h2>
+      <p>Choose one options</p>
+      <form action="#" className="flex flex-col items-center mt-12 gap-4">
+        <div className="w-80 border-2 rounded flex p-2 gap-2">
+          <input type="checkbox" className=" checked:bg-black" />
+          <p>North</p>
+        </div>
+        <div className="w-80 border-2 rounded flex p-2 gap-2">
+          <input type="checkbox" className=" checked:bg-black" />
+          <p>South</p>
+        </div>
+        <div className="w-80 border-2 rounded flex p-2 gap-2">
+          <input type="checkbox" className=" checked:bg-black" />
+          <p>West</p>
+        </div>
+        <div className="w-80 border-2 rounded flex p-2 gap-2">
+          <input type="checkbox" className=" checked:bg-black" />
+          <p>East</p>
+        </div>
+      </form>
+      <div className="w-96 flex justify-evenly items-center mt-8">
+        <button className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover">
+          Previous
+        </button>
+        <button className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover">
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Quiz;

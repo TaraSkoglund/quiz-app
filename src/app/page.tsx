@@ -1,5 +1,4 @@
 import Quiz from "@/components/Quiz";
-import Signupin from "@/components/SignUpIn";
 
 export default function Home() {
   return (
@@ -11,9 +10,9 @@ export default function Home() {
       </div>
       <div className="mt-24">
         <div>
-          <p className="my-16 text-base md:text-2xl">
+          <h2 className="my-16 text-base md:text-2xl">
             Do our quiz and learn more.
-          </p>
+          </h2>
         </div>
         <div>
           <button className=" px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
@@ -21,7 +20,7 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <Signupin />
+      {/* <Signupin /> */}
       <Quiz />
     </main>
   );

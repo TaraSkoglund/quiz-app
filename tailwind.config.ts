@@ -21,6 +21,8 @@ const config: Config = {
     },
     colors: {
       cream: "#FFFAF4",
+      button: "#BCC7B5",
+      hover: "#7D8975",
     },
   },
   plugins: [],

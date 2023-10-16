@@ -3,7 +3,8 @@ const Signupin = () => {
     <div>
       <h2 className="my-16 text-base md:text-2xl">
         {" "}
-        <button>Login</button> / <button>Register</button>
+        <button className="hover:underline">Login</button> /{" "}
+        <button className="hover:underline">Register</button>
       </h2>
       <form
         action="login"

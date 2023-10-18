@@ -1,12 +1,16 @@
 import Quiz from "@/components/Quiz";
+import Signupin from "@/components/SignUpIn";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
       <div>
-        <h1 className="text-4xl md:text-6xl px-16 md:px-20 py-6 border-b-2 border-slate-500">
-          Quiz
-        </h1>
+        <Link href="#">
+          <h1 className="text-4xl md:text-6xl px-16 md:px-20 py-6 border-b-2 border-slate-500">
+            Quiz
+          </h1>
+        </Link>
       </div>
       <div className="mt-24">
         <div>
@@ -15,12 +19,14 @@ export default function Home() {
           </h2>
         </div>
         <div>
-          <button className=" px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
-            Let’s begin!
-          </button>
+          <Link href="/quiz">
+            <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+              Let’s begin!
+            </button>
+          </Link>
         </div>
       </div>
-      {/* <Signupin /> */}
+      <Signupin />
       <Quiz />
     </main>
   );

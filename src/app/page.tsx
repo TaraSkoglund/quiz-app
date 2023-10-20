@@ -19,11 +19,20 @@ export default function Home() {
           </h2>
         </div>
         <div>
-          <Link href="/quiz">
-            <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
-              Let’s begin!
-            </button>
-          </Link>
+          <input
+            type="text"
+            name="game_name"
+            className="block w-full rounded border-2 p-1.5 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
+            placeholder="Game name"
+          />
+        </div>
+        <div className="mt-20 flex gap-4 items-center justify-center">
+          <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+            Let’s begin!
+          </button>
+          <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+            Logout
+          </button>
         </div>
       </div>
       <Signupin />

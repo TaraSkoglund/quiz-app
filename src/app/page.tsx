@@ -1,6 +1,16 @@
+"use client";
 import Quiz from "@/components/Quiz";
 import Signupin from "@/components/SignUpIn";
+import { signOutUser } from "@/firebase/utils";
 import Link from "next/link";
+
+async function handleSignOut(e: any) {
+  try {
+    await signOutUser();
+  } catch (error) {
+    console.error("ett fel uppstod vid utloggning", error);
+  }
+}
 
 export default function Home() {
   return (
@@ -30,7 +40,11 @@ export default function Home() {
           <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
             Let’s begin!
           </button>
-          <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+          <button
+            onClick={handleSignOut}
+            type="submit"
+            className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
+          >
             Logout
           </button>
         </div>

@@ -8,9 +8,9 @@ const Form = (props: Props) => {
   const { isLogin } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   async function handelSignIn(e: any) {
     e?.preventDefault();
-
     if (!isLogin) {
       const response = await registerUser(email, password);
       console.log(response);

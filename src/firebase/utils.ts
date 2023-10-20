@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { auth } from "./config";
 
@@ -33,5 +34,14 @@ export const signInUser = async (email: string, password: string) => {
   } catch (error) {
     console.error("ett fel uppstod vid inloggning", error);
     return null;
+  }
+};
+
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log("Användare har loggats ut");
+  } catch (error) {
+    console.error("ett fel uppstod vid utloggning", error);
   }
 };

@@ -12,6 +12,7 @@ export const registerUser = async (email: string, password: string) => {
       email,
       password
     );
+    const idToken = await userCredential.user.getIdToken();
     console.log("Användaren har skapats", userCredential);
 
     return userCredential.user;
@@ -29,7 +30,9 @@ export const signInUser = async (email: string, password: string) => {
       email,
       password
     );
-    console.log("Användare har loggats in", userCredential);
+    const idToken = await userCredential.user.getIdToken();
+    console.log("Användare har loggats in", userCredential.user);
+    console.log("getIdToken", idToken);
     return userCredential.user;
   } catch (error) {
     console.error("ett fel uppstod vid inloggning", error);
@@ -45,3 +48,6 @@ export const signOutUser = async () => {
     console.error("ett fel uppstod vid utloggning", error);
   }
 };
+
+// context för user om man är inloggad eller inte, som ett state "IsLogdIn"
+// onauthstatechange kan va bra att lägga till fins i youtube totorial

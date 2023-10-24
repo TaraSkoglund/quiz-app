@@ -13,10 +13,10 @@ const Form = (props: Props) => {
     e?.preventDefault();
     if (!isLogin) {
       const response = await registerUser(email, password);
-      console.log(response);
+      console.log("response", response);
     } else {
       const response = await signInUser(email, password);
-      console.log(response);
+      console.log("response", response);
     }
   }
 

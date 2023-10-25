@@ -1,4 +1,5 @@
 import { registerUser, signInUser } from "@/firebase/utils";
+import Link from "next/link";
 import { useState } from "react";
 interface Props {
   isLogin: Boolean;
@@ -44,12 +45,14 @@ const Form = (props: Props) => {
         placeholder="Password"
       />
       <div className="flex items-center justify-center w-60 md:w-80">
-        <button
-          type="submit"
-          className="mt-6 px-6 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
-        >
-          {isLogin ? "Login" : "Register"}
-        </button>
+        <Link href="@/app/page/gamepage">
+          <button
+            type="submit"
+            className="mt-6 px-6 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
+          >
+            {isLogin ? "Login" : "Register"}
+          </button>
+        </Link>
       </div>
     </form>
   );

@@ -1,3 +1,4 @@
+"use client";
 import { IdTokenResult, onAuthStateChanged, User } from "firebase/auth";
 import {
   createContext,

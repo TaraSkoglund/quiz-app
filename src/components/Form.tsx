@@ -1,6 +1,8 @@
+"use client";
 import { registerUser, signInUser } from "@/firebase/utils";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 interface Props {
   isLogin: Boolean;
 }
@@ -9,15 +11,24 @@ const Form = (props: Props) => {
   const { isLogin } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   async function handelSignIn(e: any) {
     e?.preventDefault();
     if (!isLogin) {
       const response = await registerUser(email, password);
-      console.log("response", response);
+      if (response) {
+        router.push("pages/gamepage");
+      } else {
+        console.error("Registreringsfel: något gick fel");
+      }
     } else {
       const response = await signInUser(email, password);
-      console.log("response", response);
+      if (response) {
+        router.push("pages/gamepage");
+      } else {
+        console.error("Inloggningsfel: något gick fel");
+      }
     }
   }
 
@@ -45,17 +56,17 @@ const Form = (props: Props) => {
         placeholder="Password"
       />
       <div className="flex items-center justify-center w-60 md:w-80">
-        <Link href="@/app/page/gamepage">
-          <button
-            type="submit"
-            className="mt-6 px-6 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
-          >
-            {isLogin ? "Login" : "Register"}
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="mt-6 px-6 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
+        >
+          {isLogin ? "Login" : "Register"}
+        </button>
       </div>
     </form>
   );
 };
 
 export default Form;
+
+// nextRoater next.js useRouter navegetion

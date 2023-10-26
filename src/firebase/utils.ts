@@ -48,6 +48,3 @@ export const signOutUser = async () => {
     console.error("ett fel uppstod vid utloggning", error);
   }
 };
-
-// context för user om man är inloggad eller inte, som ett state "IsLogdIn"
-// onauthstatechange kan va bra att lägga till fins i youtube totorial

@@ -11,7 +11,7 @@ const Signupin = () => {
   };
 
   return (
-    <div>
+    <div className="mt-12">
       <h2 className="my-16 text-base md:text-2xl">
         <button
           className="hover:underline"
@@ -27,6 +27,7 @@ const Signupin = () => {
           Register
         </button>
       </h2>
+
       <Form isLogin={isLogin} />
     </div>
   );

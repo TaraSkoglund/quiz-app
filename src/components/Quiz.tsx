@@ -1,6 +1,6 @@
 const Quiz = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-12">
       <h2 className="my-16 text-base md:text-2xl">
         Where is the North Star in the night sky?
       </h2>

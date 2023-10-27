@@ -1,5 +1,4 @@
 "use client";
-import Quiz from "@/components/Quiz";
 import { signOutUser } from "@/firebase/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -22,7 +21,7 @@ export default function GamePage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
       <div>
-        <Link href="#">
+        <Link href="/gamepage">
           <h1 className="text-4xl md:text-6xl px-16 md:px-20 py-6 border-b-2 border-slate-500">
             Quiz
           </h1>
@@ -43,9 +42,11 @@ export default function GamePage() {
           />
         </div>
         <div className="mt-20 flex gap-4 items-center justify-center">
-          <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
-            Let’s begin!
-          </button>
+          <Link href={"/quizpage"}>
+            <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+              Let’s begin!
+            </button>
+          </Link>
           <button
             onClick={handleSignOut}
             type="submit"
@@ -55,7 +56,6 @@ export default function GamePage() {
           </button>
         </div>
       </div>
-      <Quiz />
     </main>
   );
 }

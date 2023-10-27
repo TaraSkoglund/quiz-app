@@ -3,16 +3,21 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { collection } from "firebase/firestore";
 import { auth, db } from "./config";
 
-const getQuisData = async () => {
-  try {
-    const colRef = collection(db, "QuizData");
-    console.log("QuizData har hämtats från databas", colRef);
-    return colRef;
-  } catch (error) {
-    console.error("Ett fel uppstod vid hämtnig från databas");
+import { doc, getDoc } from "firebase/firestore";
+
+export const getQuisData = async () => {
+  const docRef = doc(db, "QuizData", "1");
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+    const quizData = docSnap.data();
+    return quizData;
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
   }
 };
 

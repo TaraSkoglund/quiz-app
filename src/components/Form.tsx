@@ -18,14 +18,14 @@ const Form = (props: Props) => {
     if (!isLogin) {
       const response = await registerUser(email, password);
       if (response) {
-        router.push("pages/gamepage");
+        router.push("/gamepage");
       } else {
         console.error("Registreringsfel: något gick fel");
       }
     } else {
       const response = await signInUser(email, password);
       if (response) {
-        router.push("pages/gamepage");
+        router.push("/gamepage");
       } else {
         console.error("Inloggningsfel: något gick fel");
       }

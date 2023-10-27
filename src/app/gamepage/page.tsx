@@ -2,16 +2,23 @@
 import Quiz from "@/components/Quiz";
 import { signOutUser } from "@/firebase/utils";
 import Link from "next/link";
-
-async function handleSignOut(e: any) {
-  try {
-    await signOutUser();
-  } catch (error) {
-    console.error("ett fel uppstod vid utloggning", error);
-  }
-}
+import { useRouter } from "next/navigation";
 
 export default function GamePage() {
+  const router = useRouter();
+  async function handleSignOut(e: any) {
+    try {
+      const response = await signOutUser();
+      if (response) {
+        router.push("/");
+      } else {
+        console.error("Utloggningsfel: något gick fel");
+      }
+    } catch (error) {
+      console.error("ett fel uppstod vid utloggning", error);
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
       <div>

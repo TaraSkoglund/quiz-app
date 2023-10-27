@@ -41,10 +41,14 @@ export const signInUser = async (email: string, password: string) => {
 };
 
 export const signOutUser = async () => {
+  let isSignedOut = false;
   try {
     await signOut(auth);
+    isSignedOut = true;
     console.log("Användare har loggats ut");
   } catch (error) {
     console.error("ett fel uppstod vid utloggning", error);
+  } finally {
+    return isSignedOut;
   }
 };

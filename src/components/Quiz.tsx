@@ -1,14 +1,19 @@
 "use client";
 import { getQuisData } from "@/firebase/utils";
-const Quiz = () => {
-  let question;
+
+type QuizProps = {
+  quizData: any;
+};
+
+const Quiz: React.FC<QuizProps> = ({ quizData }) => {
   async function handelQuizData() {
-    question = await getQuisData();
+    const question = await getQuisData("");
     console.log("question", question);
   }
+
   return (
     <div className="flex flex-col items-center mt-12">
-      {/* <h2 className="my-16 text-base md:text-2xl">{quizData?.question}</h2> */}
+      <h2 className="my-16 text-base md:text-2xl">{quizData?.question}</h2>
       <p>Choose one options</p>
       <form action="#" className="flex flex-col items-center mt-12 gap-4">
         <div className="w-80 border-2 rounded flex p-2 gap-2">

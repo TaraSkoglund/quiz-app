@@ -44,5 +44,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <AuthContext.Provider value={{ token }}>{children}</AuthContext.Provider>
   );
 };
-
-// IdTokenResult

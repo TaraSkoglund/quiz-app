@@ -1,12 +1,27 @@
 "use client";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 type QuizProps = {
   quizData: any;
 };
 
 const Quiz: React.FC<QuizProps> = ({ quizData }) => {
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const router = useRouter();
   const answers: { [key: string]: string } = quizData?.answers;
+
+  const handlePrevious = () => {};
+
+  const handleNext = () => {
+    if (selectedOption) {
+      localStorage.setItem("userAnswer", selectedOption);
+    }
+  };
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedOption(event.target.value);
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -26,16 +41,25 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
                 id={`option${key}`}
                 name="quiz"
                 className=" checked:bg-black"
+                value={value}
+                checked={selectedOption === value}
+                onChange={handleOptionChange}
               />
               <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
             </div>
           ))}
       </form>
       <div className="w-96 flex justify-evenly items-center mt-8">
-        <button className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover">
+        <button
+          onClick={handlePrevious}
+          className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover"
+        >
           Previous
         </button>
-        <button className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover">
+        <button
+          onClick={handleNext}
+          className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover"
+        >
           Next
         </button>
       </div>

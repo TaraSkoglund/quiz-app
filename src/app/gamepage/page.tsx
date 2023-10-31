@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 
 export default function GamePage() {
   const router = useRouter();
-  async function handleSignOut(e: any) {
+
+  async function handleSignOut() {
     try {
       const response = await signOutUser();
       if (response) {
@@ -27,7 +28,7 @@ export default function GamePage() {
           </h1>
         </Link>
       </div>
-      <div className="mt-24">
+      <div className="mt-16">
         <div>
           <h2 className="my-16 text-base md:text-2xl">
             Do our quiz and learn more.
@@ -42,8 +43,11 @@ export default function GamePage() {
           />
         </div>
         <div className="mt-20 flex gap-4 items-center justify-center">
-          <Link href={"/quizpage"}>
-            <button className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+          <Link href={"/gamepage/1"}>
+            <button
+              // onClick={handelQuizData}
+              className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
+            >
               Let’s begin!
             </button>
           </Link>

@@ -29,7 +29,6 @@ export default function Question({ params }: { params: { index: string } }) {
         </Link>
       </div>
       <Quiz quizData={quizData} />
-      {/* Pass the quizData as props to the Quiz component */}
     </main>
   );
 }

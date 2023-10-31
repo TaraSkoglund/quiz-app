@@ -17,7 +17,6 @@ export const getQuisData = async (quizId: string) => {
     const quizData = docSnap.data();
     return quizData;
   } else {
-    // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
 };

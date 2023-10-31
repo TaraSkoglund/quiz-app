@@ -28,7 +28,7 @@ export default function GamePage() {
           </h1>
         </Link>
       </div>
-      <div className="mt-24">
+      <div className="mt-16">
         <div>
           <h2 className="my-16 text-base md:text-2xl">
             Do our quiz and learn more.

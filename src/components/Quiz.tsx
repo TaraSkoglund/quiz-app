@@ -11,8 +11,13 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const router = useRouter();
   const answers: { [key: string]: string } = quizData?.answers;
+  const [error, setError] = useState<string>("");
 
   const handlePrevious = () => {
+    const prevAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
+    prevAnswers.pop();
+    localStorage.setItem("quizAnswers", JSON.stringify(prevAnswers));
+
     const newIndex = Number(currentIndex) - 1;
     if (newIndex >= 1) {
       router.push(`/gamepage/${newIndex}`);
@@ -20,8 +25,14 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   };
 
   const handleNext = () => {
-    const userAnswer = selectedOption;
-    const correctAnswer = quizData?.correct_answer;
+    if (!selectedOption) {
+      setError("Please select an option before proceeding.");
+      return;
+    }
+
+    const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
+    userAnswers.push(selectedOption);
+    localStorage.setItem("quizAnswers", JSON.stringify(userAnswers));
 
     const newIndex = Number(currentIndex) + 1;
     if (newIndex <= 5) {

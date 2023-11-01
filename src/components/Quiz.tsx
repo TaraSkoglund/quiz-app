@@ -4,18 +4,30 @@ import React, { useState } from "react";
 
 type QuizProps = {
   quizData: any;
+  currentIndex: string;
 };
 
-const Quiz: React.FC<QuizProps> = ({ quizData }) => {
+const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const router = useRouter();
   const answers: { [key: string]: string } = quizData?.answers;
 
-  const handlePrevious = () => {};
+  const handlePrevious = () => {
+    const newIndex = Number(currentIndex) - 1;
+    if (newIndex >= 1) {
+      router.push(`/gamepage/${newIndex}`);
+    }
+  };
 
   const handleNext = () => {
-    if (selectedOption) {
-      localStorage.setItem("userAnswer", selectedOption);
+    const userAnswer = selectedOption;
+    const correctAnswer = quizData?.correct_answer;
+
+    const newIndex = Number(currentIndex) + 1;
+    if (newIndex <= 5) {
+      router.push(`/gamepage/${newIndex}`);
+    } else {
+      router.push("/gamepage");
     }
   };
 
@@ -52,6 +64,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData }) => {
       <div className="w-96 flex justify-evenly items-center mt-8">
         <button
           onClick={handlePrevious}
+          disabled={Number(currentIndex) === 1}
           className="w-24 py-2 bg-button rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:bg-hover"
         >
           Previous

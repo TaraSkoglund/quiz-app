@@ -28,7 +28,7 @@ export default function Question({ params }: { params: { index: string } }) {
           </h1>
         </Link>
       </div>
-      <Quiz quizData={quizData} />
+      <Quiz quizData={quizData} currentIndex={index} />
     </main>
   );
 }

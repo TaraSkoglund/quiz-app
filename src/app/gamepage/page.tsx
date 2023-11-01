@@ -19,13 +19,9 @@ export default function GamePage() {
     }
   }
 
-  const useLocalStorage = () => {
-    const clearLocalStorage = () => {
-      localStorage.clear();
-    };
-
-    return { clearLocalStorage };
-  };
+  function clearLocalStorage() {
+    localStorage.clear();
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
@@ -53,7 +49,7 @@ export default function GamePage() {
         <div className="mt-20 flex gap-4 items-center justify-center">
           <Link href={"/gamepage/1"}>
             <button
-              onClick={useLocalStorage}
+              onClick={clearLocalStorage}
               className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
             >
               Let’s begin!

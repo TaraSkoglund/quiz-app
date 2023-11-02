@@ -8,15 +8,19 @@ type QuizProps = {
 };
 
 const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<{
+    correctAnswer: string;
+    answer: string;
+  }>();
+
   const router = useRouter();
   const answers: { [key: string]: string } = quizData?.answers;
   const [error, setError] = useState<string>("");
 
   const handlePrevious = () => {
-    const prevAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
-    prevAnswers.pop();
-    localStorage.setItem("quizAnswers", JSON.stringify(prevAnswers));
+    const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
+    userAnswers.pop();
+    localStorage.setItem("quizAnswers", JSON.stringify(userAnswers));
 
     const newIndex = Number(currentIndex) - 1;
     if (newIndex >= 1) {
@@ -38,12 +42,18 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     if (newIndex <= 5) {
       router.push(`/gamepage/${newIndex}`);
     } else {
-      router.push("/gamepage");
+      router.push("/result");
     }
   };
 
-  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
+  const handleOptionChange = (value: any) => {
+    console.log("value", value);
+    setSelectedOption({
+      correctAnswer: quizData.correct_answer,
+      answer: value,
+    });
+
+    console.log(selectedOption);
   };
 
   return (
@@ -64,9 +74,9 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
                 id={`option${key}`}
                 name="quiz"
                 className=" checked:bg-black"
-                value={value}
-                checked={selectedOption === value}
-                onChange={handleOptionChange}
+                value={value.toString()}
+                checked={selectedOption?.answer === key}
+                onChange={() => handleOptionChange(key)}
               />
               <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
             </div>

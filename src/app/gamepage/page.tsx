@@ -23,6 +23,20 @@ export default function GamePage() {
     localStorage.clear();
   }
 
+  function saveToLocalStorage(inputValue: string) {
+    clearLocalStorage();
+    localStorage.setItem("gameName", inputValue);
+  }
+
+  const handleBegin = () => {
+    const inputElement = document.querySelector(
+      'input[name="game_name"]'
+    ) as HTMLInputElement;
+    if (inputElement) {
+      saveToLocalStorage(inputElement.value);
+    }
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24 font-serif text-center">
       <div>
@@ -49,7 +63,7 @@ export default function GamePage() {
         <div className="mt-20 flex gap-4 items-center justify-center">
           <Link href={"/gamepage/1"}>
             <button
-              onClick={clearLocalStorage}
+              onClick={handleBegin}
               className="px-3 py-2 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4"
             >
               Let’s begin!

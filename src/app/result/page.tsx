@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ResultPage() {
-  const [userAnswers, setUserAnswers] = useState<string[]>([]);
-  const [correctAnswers, setCorrectAnswers] = useState<string[]>([]);
+  const [userAnswers, setUserAnswers] = useState<
+    { correctAnswer: string; answer: string }[]
+  >([]);
+  const [correctCount, setCorrectCount] = useState<number>(0);
 
   useEffect(() => {
     const storedAnswers = JSON.parse(
@@ -14,15 +16,14 @@ export default function ResultPage() {
   }, []);
 
   useEffect(() => {
-    const storedCorrectAnswers = JSON.parse(
-      localStorage.getItem("correctAnswers") || "[]"
-    );
-    setCorrectAnswers(storedCorrectAnswers);
-  }, []);
-
-  const filteredUserAnswers = userAnswers.filter((answer) =>
-    correctAnswers.includes(answer)
-  );
+    let count = 0;
+    for (const answer of userAnswers) {
+      if (answer.correctAnswer === answer.answer) {
+        count++;
+      }
+    }
+    setCorrectCount(count);
+  }, [userAnswers]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-18 mt-12 font-serif text-center">
@@ -34,21 +35,20 @@ export default function ResultPage() {
         </Link>
       </div>
       <div>
-        <h2 className="my-16 text-base md:text-2xl">You´re Resulte.</h2>
+        <h2 className="my-8 md:my-16 text-base md:text-2xl">You´re Resulte.</h2>
       </div>
       <div>
-        {filteredUserAnswers.map((answer, index) => (
-          <h2 key={index} className="my-16 text-2xl md:text-5xl">
-            {answer} av 5
-          </h2>
-        ))}
+        <h2 className="my-8 md:my-12 text-2xl md:text-5xl">{`${correctCount} av 5`}</h2>
       </div>
       <div>
         <div>
-          <h2 className="my-16 text-base md:text-xl">
-            It could have been better.
-          </h2>
-          <h2 className="my-16 text-base md:text-xl">Greate jobb.</h2>
+          {correctCount === 5 ? (
+            <h2 className="my-8 md:my-12 text-xl md:text-3xl">Great job!</h2>
+          ) : (
+            <h2 className="my-8 md:my-12 text-xl md:text-3xl">
+              Could have been better.
+            </h2>
+          )}
         </div>
       </div>
     </main>

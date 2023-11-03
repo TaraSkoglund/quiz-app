@@ -8,12 +8,10 @@ import { auth, db } from "./config";
 import { doc, getDoc } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
-  console.log("index", quizId);
   const docRef = doc(db, "QuizData", quizId);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     const quizData = docSnap.data();
     return quizData;
   } else {

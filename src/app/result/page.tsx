@@ -12,18 +12,15 @@ export default function ResultPage() {
     const storedAnswers = JSON.parse(
       localStorage.getItem("quizAnswers") || "[]"
     );
-    setUserAnswers(storedAnswers);
-  }, []);
-
-  useEffect(() => {
     let count = 0;
-    for (const answer of userAnswers) {
+    for (const answer of storedAnswers) {
       if (answer.correctAnswer === answer.answer) {
         count++;
       }
     }
     setCorrectCount(count);
-  }, [userAnswers]);
+    setUserAnswers(storedAnswers);
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-18 mt-12 font-serif text-center">
@@ -35,7 +32,7 @@ export default function ResultPage() {
         </Link>
       </div>
       <div>
-        <h2 className="my-8 md:my-16 text-base md:text-2xl">You´re Resulte.</h2>
+        <h2 className="my-8 md:my-16 text-base md:text-2xl">You´re Result.</h2>
       </div>
       <div>
         <h2 className="my-8 md:my-12 text-2xl md:text-5xl">{`${correctCount} av 5`}</h2>

@@ -1,4 +1,5 @@
 "use client";
+import { saveGameData } from "@/firebase/utils";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -12,10 +13,14 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     correctAnswer: string;
     answer: string;
   }>();
-
   const router = useRouter();
   const answers: { [key: string]: string } = quizData?.answers;
   const [error, setError] = useState<string>("");
+  const [userAnswers, setUserAnswers] = useState<
+    { correctAnswer: string; answer: string }[]
+  >([]);
+  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [dataSent, setDataSent] = useState(false);
 
   const handlePrevious = () => {
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -42,6 +47,21 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     if (newIndex <= 5) {
       router.push(`/gamepage/${newIndex}`);
     } else {
+      if (!dataSent) {
+        setUserAnswers(userAnswers);
+        let count = 0;
+        for (const answer of userAnswers) {
+          if (answer.correctAnswer === answer.answer) {
+            count++;
+          }
+        }
+        setCorrectCount(count);
+        const game_name = localStorage.getItem("game_name");
+        if (game_name !== null) {
+          saveGameData(game_name, count);
+        }
+        setDataSent(true);
+      }
       router.push("/result");
     }
   };

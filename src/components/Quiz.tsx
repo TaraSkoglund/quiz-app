@@ -67,13 +67,10 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   };
 
   const handleOptionChange = (value: any) => {
-    console.log("value", value);
     setSelectedOption({
       correctAnswer: quizData.correct_answer,
       answer: value,
     });
-
-    console.log(selectedOption);
   };
 
   return (

@@ -47,6 +47,16 @@ export default function ResultPage() {
             </h2>
           )}
         </div>
+        <Link href={"/gamepage"}>
+          <button className="px-3 py-2 m-4 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+            Try again
+          </button>
+        </Link>
+        <Link href={"/statistics"}>
+          <button className="px-3 py-2 m-4 border-2 border-black rounded text-xs md:text-base whitespace-nowrap hover:shadow-2xl hover:border-4">
+            Statistics
+          </button>
+        </Link>
       </div>
     </main>
   );

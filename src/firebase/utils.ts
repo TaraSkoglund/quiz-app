@@ -21,10 +21,10 @@ export const getQuisData = async (quizId: string) => {
 
 export const getAllGameData = async () => {
   const querySnapshot = await getDocs(collection(db, "GameData"));
-  const gameDataList: { game_name: string; resulte: number }[] = [];
+  const gameDataList: { game_name: string; result: number }[] = [];
   querySnapshot.forEach((doc) => {
     if (doc.exists()) {
-      const gameData = doc.data() as { game_name: string; resulte: number };
+      const gameData = doc.data() as { game_name: string; result: number };
       gameDataList.push(gameData);
     } else {
       console.log("No such document!");
@@ -37,9 +37,8 @@ export const saveGameData = async (game_name: string, correctCount: number) => {
   try {
     const docRef = await addDoc(collection(db, "GameData"), {
       game_name: game_name,
-      resulte: correctCount,
+      result: correctCount,
     });
-    console.log("Dokument skrivet med ID: ", docRef.id);
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);
   }
@@ -53,7 +52,6 @@ export const registerUser = async (email: string, password: string) => {
       password
     );
     const idToken = await userCredential.user.getIdToken();
-    console.log("Användaren har skapats", userCredential);
 
     return userCredential.user;
   } catch (error) {
@@ -71,8 +69,7 @@ export const signInUser = async (email: string, password: string) => {
       password
     );
     const idToken = await userCredential.user.getIdToken();
-    console.log("Användare har loggats in", userCredential.user);
-    console.log("getIdToken", idToken);
+    console.log("Användare har loggats in");
     return userCredential.user;
   } catch (error) {
     console.error("ett fel uppstod vid inloggning", error);

@@ -11,7 +11,6 @@ export default function Question({ params }: { params: { index: string } }) {
   useEffect(() => {
     const fetchData = async () => {
       const question = await getQuisData(index);
-      console.log("question", question);
       if (question) {
         setQuizData(question);
       }

@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "./config";
 
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
   const docRef = doc(db, "QuizData", quizId);
@@ -18,6 +18,21 @@ export const getQuisData = async (quizId: string) => {
     console.log("No such document!");
   }
 };
+
+export const getAllGameData = async () => {
+  const querySnapshot = await getDocs(collection(db, "GameData"));
+  const gameDataList: { game_name: string; resulte: number }[] = [];
+  querySnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      const gameData = doc.data() as { game_name: string; resulte: number };
+      gameDataList.push(gameData);
+    } else {
+      console.log("No such document!");
+    }
+  });
+  return gameDataList;
+};
+
 export const saveGameData = async (game_name: string, correctCount: number) => {
   try {
     const docRef = await addDoc(collection(db, "GameData"), {

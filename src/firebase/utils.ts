@@ -5,7 +5,15 @@ import {
 } from "firebase/auth";
 import { auth, db } from "./config";
 
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
   const docRef = doc(db, "QuizData", quizId);
@@ -20,7 +28,9 @@ export const getQuisData = async (quizId: string) => {
 };
 
 export const getAllGameData = async () => {
-  const querySnapshot = await getDocs(collection(db, "GameData"));
+  const querySnapshot = await getDocs(
+    query(collection(db, "GameData"), orderBy("result", "desc"))
+  );
   const gameDataList: { game_name: string; result: number }[] = [];
   querySnapshot.forEach((doc) => {
     if (doc.exists()) {

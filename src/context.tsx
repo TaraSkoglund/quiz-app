@@ -1,5 +1,6 @@
 "use client";
 import { IdTokenResult, onAuthStateChanged, User } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   ReactNode,
@@ -25,6 +26,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<IdTokenResult | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
@@ -34,11 +36,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
       } else {
         setToken(null);
+        router.push("/");
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   return (
     <AuthContext.Provider value={{ token }}>{children}</AuthContext.Provider>

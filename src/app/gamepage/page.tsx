@@ -5,22 +5,21 @@ import { useRouter } from "next/navigation";
 
 export default function GamePage() {
   const router = useRouter();
+  function clearLocalStorage() {
+    localStorage.clear();
+  }
 
   async function handleSignOut() {
     try {
       const response = await signOutUser();
       if (response) {
-        router.push("/");
+        clearLocalStorage();
       } else {
         console.error("Utloggningsfel: något gick fel");
       }
     } catch (error) {
       console.error("ett fel uppstod vid utloggning", error);
     }
-  }
-
-  function clearLocalStorage() {
-    localStorage.clear();
   }
 
   function saveToLocalStorage(inputValue: string) {

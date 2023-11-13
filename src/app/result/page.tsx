@@ -1,4 +1,5 @@
 "use client";
+import { saveGameData } from "@/firebase/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,13 @@ export default function ResultPage() {
     }
     setCorrectCount(count);
     setUserAnswers(storedAnswers);
+
+    if (count === 5) {
+      const game_name = localStorage.getItem("game_name");
+      if (game_name !== null) {
+        saveGameData(game_name, count);
+      }
+    }
   }, []);
 
   return (

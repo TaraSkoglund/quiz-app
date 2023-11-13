@@ -44,6 +44,7 @@ export default function StatisticsPage() {
             >
               <h2>{gameData.game_name}</h2>
               <h2>{gameData.result}p</h2>
+              {/* <h2>{gameData.play_date}</h2> */}
             </div>
           ))}
         </div>

@@ -31,15 +31,25 @@ export const getAllGameData = async () => {
   const querySnapshot = await getDocs(
     query(collection(db, "GameData"), orderBy("result", "desc"))
   );
-  const gameDataList: { game_name: string; result: number }[] = [];
+
+  const gameDataList: {
+    game_name: string;
+    result: number;
+  }[] = [];
+
   querySnapshot.forEach((doc) => {
     if (doc.exists()) {
-      const gameData = doc.data() as { game_name: string; result: number };
+      const gameData = doc.data() as {
+        game_name: string;
+        result: number;
+      };
+
       gameDataList.push(gameData);
     } else {
       console.log("No such document!");
     }
   });
+
   return gameDataList;
 };
 

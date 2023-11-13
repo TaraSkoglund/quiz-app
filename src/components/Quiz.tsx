@@ -1,7 +1,7 @@
 "use client";
 import { saveGameData } from "@/firebase/utils";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 type QuizProps = {
   quizData: any;
@@ -14,7 +14,15 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     answer: string;
   }>();
   const router = useRouter();
-  const answers: { [key: string]: string } = quizData?.answers;
+
+  const shuffledAnswers = useMemo(() => {
+    const answers: { [key: string]: string } = quizData?.answers || {};
+    const shuffledArray = Object.entries(answers).sort(
+      () => Math.random() - 0.5
+    );
+    return shuffledArray;
+  }, [quizData]);
+
   const [error, setError] = useState<string>("");
   const [userAnswers, setUserAnswers] = useState<
     { correctAnswer: string; answer: string }[]
@@ -68,7 +76,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
 
   const handleOptionChange = (value: any) => {
     setSelectedOption({
-      correctAnswer: quizData.correct_answer,
+      correctAnswer: quizData?.correct_answer || "",
       answer: value,
     });
   };
@@ -80,24 +88,25 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
       </h2>
       <p className="text-sm md:text-base">Choose one option</p>
       <form action="#" className="flex flex-col items-center mt-12 gap-4">
-        {answers &&
-          Object.entries(answers).map(([key, value]) => (
-            <div
-              key={key}
-              className="w-72 md:w-96 border-2 rounded flex p-2 gap-2"
-            >
-              <input
-                type="radio"
-                id={`option${key}`}
-                name="quiz"
-                className=" checked:bg-black"
-                value={value.toString()}
-                checked={selectedOption?.answer === key}
-                onChange={() => handleOptionChange(key)}
-              />
-              <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
-            </div>
-          ))}
+        {shuffledAnswers.map(([key, value]) => (
+          <div
+            key={key}
+            className="w-72 md:w-96 border-2 rounded flex p-2 gap-2"
+          >
+            <input
+              type="radio"
+              id={`option${key}`}
+              name="quiz"
+              className=" checked:bg-black"
+              value={value.toString()}
+              checked={selectedOption?.answer === key}
+              onChange={(e) => {
+                e.preventDefault, handleOptionChange(key);
+              }}
+            />
+            <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
+          </div>
+        ))}
       </form>
       <div className="w-96 flex justify-evenly items-center mt-8">
         <button

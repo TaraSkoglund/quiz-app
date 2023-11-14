@@ -29,6 +29,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   >([]);
   const [correctCount, setCorrectCount] = useState<number>(0);
   const [dataSent, setDataSent] = useState(false);
+  const [playDate, setPlayDate] = useState<Date | null>(null);
 
   const handlePrevious = () => {
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -64,9 +65,13 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
           }
         }
         setCorrectCount(count);
+
+        const currentDate = new Date();
+        setPlayDate(new Date());
+
         const game_name = localStorage.getItem("game_name");
         if (game_name !== null) {
-          saveGameData(game_name, count);
+          saveGameData(game_name, count, playDate || currentDate);
         }
         setDataSent(true);
       }

@@ -25,7 +25,8 @@ export default function ResultPage() {
     if (count === 5) {
       const game_name = localStorage.getItem("game_name");
       if (game_name !== null) {
-        saveGameData(game_name, count);
+        const playDate = new Date();
+        saveGameData(game_name, count, playDate);
       }
     }
   }, []);

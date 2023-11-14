@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 type GameData = {
   game_name: string;
   result: number;
+  play_date: any;
 };
 
 export default function StatisticsPage() {
@@ -43,8 +44,17 @@ export default function StatisticsPage() {
               className="w-72 md:w-96 border-2 rounded flex p-2 m-4 justify-between"
             >
               <h2>{gameData.game_name}</h2>
-              <h2>{gameData.result}p</h2>
-              {/* <h2>{gameData.play_date}</h2> */}
+              <div className="flex gap-4">
+                <h2>{gameData.result}p</h2>
+                <h2>
+                  {gameData.play_date
+                    ? gameData.play_date
+                        .toDate()
+                        .toLocaleString()
+                        .substring(0, 10)
+                    : "N/A"}
+                </h2>
+              </div>
             </div>
           ))}
         </div>

@@ -35,6 +35,7 @@ export const getAllGameData = async () => {
   const gameDataList: {
     game_name: string;
     result: number;
+    play_date: any;
   }[] = [];
 
   querySnapshot.forEach((doc) => {
@@ -42,6 +43,7 @@ export const getAllGameData = async () => {
       const gameData = doc.data() as {
         game_name: string;
         result: number;
+        play_date: any;
       };
 
       gameDataList.push(gameData);
@@ -53,11 +55,16 @@ export const getAllGameData = async () => {
   return gameDataList;
 };
 
-export const saveGameData = async (game_name: string, correctCount: number) => {
+export const saveGameData = async (
+  game_name: string,
+  correctCount: number,
+  play_date: Date
+) => {
   try {
     const docRef = await addDoc(collection(db, "GameData"), {
       game_name: game_name,
       result: correctCount,
+      play_date: play_date,
     });
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);

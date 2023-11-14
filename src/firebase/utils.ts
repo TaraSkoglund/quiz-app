@@ -61,7 +61,15 @@ export const saveGameData = async (
   play_date: Date
 ) => {
   try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("Användaren är inte inloggad.");
+      return;
+    }
+
+    const userId = user.uid;
     const docRef = await addDoc(collection(db, "GameData"), {
+      userId: userId,
       game_name: game_name,
       result: correctCount,
       play_date: play_date,

@@ -14,17 +14,16 @@ export default function StatisticsPage() {
   const [gameDataList, setGameDataList] = useState<GameData[]>([]);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
+  const fetchAllGameData = async () => {
+    try {
+      const allGameData = await getAllGameData();
+      setGameDataList(allGameData);
+    } catch (error) {
+      console.error("Error fetching all game data: ", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchAllGameData = async () => {
-      try {
-        const allGameData = await getAllGameData();
-
-        setGameDataList(allGameData);
-      } catch (error) {
-        console.error("Error fetching all game data: ", error);
-      }
-    };
-
     fetchAllGameData();
 
     const user = auth.currentUser;
@@ -63,7 +62,7 @@ export default function StatisticsPage() {
               </div>
               <div>
                 <h2 className=" text-base mb-6">
-                  User Email: {userEmail || "Not available"}
+                  {userEmail || "Not available"}
                 </h2>
               </div>
             </div>

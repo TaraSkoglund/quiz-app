@@ -13,6 +13,7 @@ import {
   getDocs,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
@@ -68,12 +69,26 @@ export const saveGameData = async (
     }
 
     const userId = user.uid;
-    const docRef = await addDoc(collection(db, "GameData"), {
-      userId: userId,
-      game_name: game_name,
-      result: correctCount,
-      play_date: play_date,
-    });
+    const gameDataRef = collection(db, "GameData");
+
+    const existingDoc = await getDocs(
+      query(
+        gameDataRef,
+        where("userId", "==", userId),
+        where("game_name", "==", game_name)
+      )
+    );
+
+    if (existingDoc.size === 0) {
+      await addDoc(gameDataRef, {
+        userId: userId,
+        game_name: game_name,
+        result: correctCount,
+        play_date: play_date,
+      });
+    } else {
+      console.log("Dokumentet finns redan!");
+    }
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);
   }

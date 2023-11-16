@@ -13,7 +13,6 @@ import {
   getDocs,
   orderBy,
   query,
-  where,
 } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
@@ -37,6 +36,7 @@ export const getAllGameData = async () => {
     game_name: string;
     result: number;
     play_date: any;
+    userId: string;
   }[] = [];
 
   querySnapshot.forEach((doc) => {
@@ -45,6 +45,7 @@ export const getAllGameData = async () => {
         game_name: string;
         result: number;
         play_date: any;
+        userId: string;
       };
 
       gameDataList.push(gameData);
@@ -57,38 +58,20 @@ export const getAllGameData = async () => {
 };
 
 export const saveGameData = async (
+  userId: string,
   game_name: string,
   correctCount: number,
   play_date: Date
 ) => {
   try {
-    const user = auth.currentUser;
-    if (!user) {
-      console.error("Användaren är inte inloggad.");
-      return;
-    }
-
-    const userId = user.uid;
     const gameDataRef = collection(db, "GameData");
 
-    const existingDoc = await getDocs(
-      query(
-        gameDataRef,
-        where("userId", "==", userId),
-        where("game_name", "==", game_name)
-      )
-    );
-
-    if (existingDoc.size === 0) {
-      await addDoc(gameDataRef, {
-        userId: userId,
-        game_name: game_name,
-        result: correctCount,
-        play_date: play_date,
-      });
-    } else {
-      console.log("Dokumentet finns redan!");
-    }
+    await addDoc(gameDataRef, {
+      userId: userId,
+      game_name: game_name,
+      result: correctCount,
+      play_date: play_date,
+    });
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);
   }

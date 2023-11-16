@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/context";
 import { saveGameData } from "@/firebase/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,6 +9,8 @@ export default function ResultPage() {
     { correctAnswer: string; answer: string }[]
   >([]);
   const [correctCount, setCorrectCount] = useState<number>(0);
+  const { user } = useAuth();
+  const userId = user?.uid ?? null;
 
   useEffect(() => {
     const storedAnswers = JSON.parse(
@@ -22,14 +25,14 @@ export default function ResultPage() {
     setCorrectCount(count);
     setUserAnswers(storedAnswers);
 
-    if (count === 5) {
+    if (count === 5 && userId) {
       const game_name = localStorage.getItem("game_name");
       if (game_name !== null) {
         const playDate = new Date();
-        saveGameData(game_name, count, playDate);
+        saveGameData(userId, game_name, correctCount, playDate);
       }
     }
-  }, []);
+  }, [correctCount, userId]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-18 mt-12 font-serif text-center">

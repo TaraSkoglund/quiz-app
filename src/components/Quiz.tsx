@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/context";
 import { saveGameData } from "@/firebase/utils";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -14,6 +15,8 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     answer: string;
   }>();
   const router = useRouter();
+  const { user } = useAuth();
+  const userId = user?.uid ?? null;
 
   const shuffledAnswers = useMemo(() => {
     const answers: { [key: string]: string } = quizData?.answers || {};
@@ -23,7 +26,6 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     return shuffledArray;
   }, [quizData]);
 
-  const [error, setError] = useState<string>("");
   const [userAnswers, setUserAnswers] = useState<
     { correctAnswer: string; answer: string }[]
   >([]);
@@ -44,8 +46,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
 
   const handleNext = () => {
     if (!selectedOption) {
-      setError("Please select an option before proceeding.");
-      return;
+      console.error("Please select an option before proceeding.");
     }
 
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -65,13 +66,15 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
           }
         }
         setCorrectCount(count);
-
-        const currentDate = new Date();
-        setPlayDate(new Date());
+        const newPlayDate = new Date();
+        setPlayDate(newPlayDate);
 
         const game_name = localStorage.getItem("game_name");
-        if (game_name !== null) {
-          saveGameData(game_name, count, playDate || currentDate);
+        if (game_name !== null && userId !== null && newPlayDate !== null) {
+          saveGameData(userId, game_name, count, newPlayDate);
+        } else {
+          console.log("playDate", playDate);
+          console.error("game_name, userId, or playDate is null");
         }
         setDataSent(true);
       }

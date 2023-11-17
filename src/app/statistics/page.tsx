@@ -1,28 +1,38 @@
 "use client";
+import { useAuth } from "@/context";
+import { auth } from "@/firebase/config";
 import { getAllGameData } from "@/firebase/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type GameData = {
+  userId: any;
   game_name: string;
   result: number;
+  play_date: any;
 };
 
 export default function StatisticsPage() {
   const [gameDataList, setGameDataList] = useState<GameData[]>([]);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  const fetchAllGameData = async () => {
+    try {
+      const allGameData = await getAllGameData();
+      setGameDataList(allGameData);
+    } catch (error) {
+      console.error("Error fetching all game data: ", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchAllGameData = async () => {
-      try {
-        const allGameData = await getAllGameData();
-
-        setGameDataList(allGameData);
-      } catch (error) {
-        console.error("Error fetching all game data: ", error);
-      }
-    };
-
     fetchAllGameData();
+
+    const user = auth.currentUser;
+    if (user) {
+      setUserEmail(user.email || null);
+    }
   }, []);
 
   return (
@@ -38,12 +48,27 @@ export default function StatisticsPage() {
       {gameDataList.length > 0 ? (
         <div className="mt-12">
           {gameDataList.map((gameData, index) => (
-            <div
-              key={index}
-              className="w-72 md:w-96 border-2 rounded flex p-2 m-4 justify-between"
-            >
-              <h2>{gameData.game_name}</h2>
-              <h2>{gameData.result}p</h2>
+            <div key={index}>
+              <div className="w-72 md:w-96 border-2 rounded flex p-2 mt-2 justify-between">
+                <h2>{gameData.game_name}</h2>
+                <div className="flex gap-4">
+                  <h2>{gameData.result}p</h2>
+                  <h2>
+                    {gameData.play_date
+                      ?.toDate()
+                      .toLocaleString()
+                      .substring(0, 10) || "N/A"}
+                  </h2>
+                </div>
+              </div>
+              <div>
+                <h2 className=" text-base mb-6">
+                  {gameData.userId === user?.uid ? "You" : gameData.userId}
+                  {gameData.userId === user?.uid && userEmail
+                    ? `: ${userEmail}`
+                    : " : N/A"}
+                </h2>
+              </div>
             </div>
           ))}
         </div>

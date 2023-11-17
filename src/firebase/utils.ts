@@ -5,7 +5,15 @@ import {
 } from "firebase/auth";
 import { auth, db } from "./config";
 
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
   const docRef = doc(db, "QuizData", quizId);
@@ -20,24 +28,49 @@ export const getQuisData = async (quizId: string) => {
 };
 
 export const getAllGameData = async () => {
-  const querySnapshot = await getDocs(collection(db, "GameData"));
-  const gameDataList: { game_name: string; result: number }[] = [];
+  const querySnapshot = await getDocs(
+    query(collection(db, "GameData"), orderBy("result", "desc"))
+  );
+
+  const gameDataList: {
+    game_name: string;
+    result: number;
+    play_date: any;
+    userId: string;
+  }[] = [];
+
   querySnapshot.forEach((doc) => {
     if (doc.exists()) {
-      const gameData = doc.data() as { game_name: string; result: number };
+      const gameData = doc.data() as {
+        game_name: string;
+        result: number;
+        play_date: any;
+        userId: string;
+      };
+
       gameDataList.push(gameData);
     } else {
       console.log("No such document!");
     }
   });
+
   return gameDataList;
 };
 
-export const saveGameData = async (game_name: string, correctCount: number) => {
+export const saveGameData = async (
+  userId: string,
+  game_name: string,
+  correctCount: number,
+  play_date: Date
+) => {
   try {
-    const docRef = await addDoc(collection(db, "GameData"), {
+    const gameDataRef = collection(db, "GameData");
+
+    await addDoc(gameDataRef, {
+      userId: userId,
       game_name: game_name,
       result: correctCount,
+      play_date: play_date,
     });
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);

@@ -1,7 +1,8 @@
 "use client";
+import { useAuth } from "@/context";
 import { saveGameData } from "@/firebase/utils";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 type QuizProps = {
   quizData: any;
@@ -14,13 +15,23 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     answer: string;
   }>();
   const router = useRouter();
-  const answers: { [key: string]: string } = quizData?.answers;
-  const [error, setError] = useState<string>("");
+  const { user } = useAuth();
+  const userId = user?.uid ?? null;
+
+  const shuffledAnswers = useMemo(() => {
+    const answers: { [key: string]: string } = quizData?.answers || {};
+    const shuffledArray = Object.entries(answers).sort(
+      () => Math.random() - 0.5
+    );
+    return shuffledArray;
+  }, [quizData]);
+
   const [userAnswers, setUserAnswers] = useState<
     { correctAnswer: string; answer: string }[]
   >([]);
   const [correctCount, setCorrectCount] = useState<number>(0);
   const [dataSent, setDataSent] = useState(false);
+  const [playDate, setPlayDate] = useState<Date | null>(null);
 
   const handlePrevious = () => {
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -35,8 +46,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
 
   const handleNext = () => {
     if (!selectedOption) {
-      setError("Please select an option before proceeding.");
-      return;
+      console.error("Please select an option before proceeding.");
     }
 
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -56,9 +66,15 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
           }
         }
         setCorrectCount(count);
+        const newPlayDate = new Date();
+        setPlayDate(newPlayDate);
+
         const game_name = localStorage.getItem("game_name");
-        if (game_name !== null) {
-          saveGameData(game_name, count);
+        if (game_name !== null && userId !== null && newPlayDate !== null) {
+          saveGameData(userId, game_name, count, newPlayDate);
+        } else {
+          console.log("playDate", playDate);
+          console.error("game_name, userId, or playDate is null");
         }
         setDataSent(true);
       }
@@ -68,7 +84,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
 
   const handleOptionChange = (value: any) => {
     setSelectedOption({
-      correctAnswer: quizData.correct_answer,
+      correctAnswer: quizData?.correct_answer || "",
       answer: value,
     });
   };
@@ -80,24 +96,25 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
       </h2>
       <p className="text-sm md:text-base">Choose one option</p>
       <form action="#" className="flex flex-col items-center mt-12 gap-4">
-        {answers &&
-          Object.entries(answers).map(([key, value]) => (
-            <div
-              key={key}
-              className="w-72 md:w-96 border-2 rounded flex p-2 gap-2"
-            >
-              <input
-                type="radio"
-                id={`option${key}`}
-                name="quiz"
-                className=" checked:bg-black"
-                value={value.toString()}
-                checked={selectedOption?.answer === key}
-                onChange={() => handleOptionChange(key)}
-              />
-              <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
-            </div>
-          ))}
+        {shuffledAnswers.map(([key, value]) => (
+          <div
+            key={key}
+            className="w-72 md:w-96 border-2 rounded flex p-2 gap-2"
+          >
+            <input
+              type="radio"
+              id={`option${key}`}
+              name="quiz"
+              className=" checked:bg-black"
+              value={value.toString()}
+              checked={selectedOption?.answer === key}
+              onChange={(e) => {
+                e.preventDefault, handleOptionChange(key);
+              }}
+            />
+            <label htmlFor={`option${key}`}>{value as React.ReactNode}</label>
+          </div>
+        ))}
       </form>
       <div className="w-96 flex justify-evenly items-center mt-8">
         <button

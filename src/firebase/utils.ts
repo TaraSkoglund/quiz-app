@@ -13,6 +13,7 @@ import {
   getDocs,
   orderBy,
   query,
+  setDoc,
 } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
@@ -84,12 +85,13 @@ export const registerUser = async (email: string, password: string) => {
       email,
       password
     );
+
     const idToken = await userCredential.user.getIdToken();
+    await saveUserEmailToDatabase(userCredential.user.uid, email);
 
     return userCredential.user;
   } catch (error) {
     console.error("Ett fel uppstod vid registrering", error);
-
     return null;
   }
 };
@@ -101,7 +103,11 @@ export const signInUser = async (email: string, password: string) => {
       email,
       password
     );
+
     const idToken = await userCredential.user.getIdToken();
+
+    await saveUserEmailToDatabase(userCredential.user.uid, email);
+
     console.log("Användare har loggats in");
     return userCredential.user;
   } catch (error) {
@@ -120,5 +126,16 @@ export const signOutUser = async () => {
     console.error("ett fel uppstod vid utloggning", error);
   } finally {
     return isSignedOut;
+  }
+};
+
+const saveUserEmailToDatabase = async (userId: string, email: string) => {
+  try {
+    const userDataRef = doc(db, "UserData", userId);
+
+    await setDoc(userDataRef, { email: email });
+    console.log("Användarens e-post har sparats i databasen");
+  } catch (error) {
+    console.error("Ett fel uppstod vid sparande av e-post i databasen", error);
   }
 };

@@ -53,6 +53,7 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
     userAnswers.push(selectedOption);
     localStorage.setItem("quizAnswers", JSON.stringify(userAnswers));
 
+    const newPlayDate = new Date();
     const newIndex = Number(currentIndex) + 1;
     if (newIndex <= 5) {
       router.push(`/gamepage/${newIndex}`);
@@ -66,7 +67,6 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
           }
         }
         setCorrectCount(count);
-        const newPlayDate = new Date();
         setPlayDate(newPlayDate);
 
         const game_name = localStorage.getItem("game_name");

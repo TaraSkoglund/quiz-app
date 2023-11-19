@@ -13,7 +13,6 @@ import {
   getDocs,
   orderBy,
   query,
-  setDoc,
 } from "firebase/firestore";
 
 export const getQuisData = async (quizId: string) => {
@@ -37,7 +36,7 @@ export const getAllGameData = async () => {
     game_name: string;
     result: number;
     play_date: any;
-    userId: string;
+    email: string;
   }[] = [];
 
   querySnapshot.forEach((doc) => {
@@ -46,7 +45,7 @@ export const getAllGameData = async () => {
         game_name: string;
         result: number;
         play_date: any;
-        userId: string;
+        email: string;
       };
 
       gameDataList.push(gameData);
@@ -59,19 +58,19 @@ export const getAllGameData = async () => {
 };
 
 export const saveGameData = async (
-  userId: string,
   game_name: string,
   correctCount: number,
-  play_date: Date
+  play_date: Date,
+  email: string
 ) => {
   try {
     const gameDataRef = collection(db, "GameData");
 
     await addDoc(gameDataRef, {
-      userId: userId,
       game_name: game_name,
       result: correctCount,
       play_date: play_date,
+      email: email,
     });
   } catch (error) {
     console.error("Ett fel uppstod vid skrivning av dokument: ", error);
@@ -87,8 +86,6 @@ export const registerUser = async (email: string, password: string) => {
     );
 
     const idToken = await userCredential.user.getIdToken();
-    await saveUserEmailToDatabase(userCredential.user.uid, email);
-
     return userCredential.user;
   } catch (error) {
     console.error("Ett fel uppstod vid registrering", error);
@@ -105,9 +102,6 @@ export const signInUser = async (email: string, password: string) => {
     );
 
     const idToken = await userCredential.user.getIdToken();
-
-    await saveUserEmailToDatabase(userCredential.user.uid, email);
-
     console.log("Användare har loggats in");
     return userCredential.user;
   } catch (error) {
@@ -126,16 +120,5 @@ export const signOutUser = async () => {
     console.error("ett fel uppstod vid utloggning", error);
   } finally {
     return isSignedOut;
-  }
-};
-
-const saveUserEmailToDatabase = async (userId: string, email: string) => {
-  try {
-    const userDataRef = doc(db, "UserData", userId);
-
-    await setDoc(userDataRef, { email: email });
-    console.log("Användarens e-post har sparats i databasen");
-  } catch (error) {
-    console.error("Ett fel uppstod vid sparande av e-post i databasen", error);
   }
 };

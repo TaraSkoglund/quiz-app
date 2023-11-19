@@ -32,7 +32,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser: User | null) => {
-      console.log("currentUser", currentUser);
       if (currentUser) {
         currentUser.getIdTokenResult().then((idTokenResult) => {
           setUser(currentUser);

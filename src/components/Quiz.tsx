@@ -10,13 +10,17 @@ type QuizProps = {
 };
 
 const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
+  const router = useRouter();
+  const { user } = useAuth();
+  const userId = user?.uid ?? null;
+  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [dataSent, setDataSent] = useState(false);
+  const [playDate, setPlayDate] = useState<Date | null>(null);
+
   const [selectedOption, setSelectedOption] = useState<{
     correctAnswer: string;
     answer: string;
   }>();
-  const router = useRouter();
-  const { user } = useAuth();
-  const userId = user?.uid ?? null;
 
   const shuffledAnswers = useMemo(() => {
     const answers: { [key: string]: string } = quizData?.answers || {};
@@ -29,9 +33,6 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
   const [userAnswers, setUserAnswers] = useState<
     { correctAnswer: string; answer: string }[]
   >([]);
-  const [correctCount, setCorrectCount] = useState<number>(0);
-  const [dataSent, setDataSent] = useState(false);
-  const [playDate, setPlayDate] = useState<Date | null>(null);
 
   const handlePrevious = () => {
     const userAnswers = JSON.parse(localStorage.getItem("quizAnswers") || "[]");
@@ -70,11 +71,15 @@ const Quiz: React.FC<QuizProps> = ({ quizData, currentIndex }) => {
         setPlayDate(newPlayDate);
 
         const game_name = localStorage.getItem("game_name");
-        if (game_name !== null && userId !== null && newPlayDate !== null) {
-          saveGameData(userId, game_name, count, newPlayDate);
+        if (
+          game_name !== null &&
+          user &&
+          user.email !== null &&
+          newPlayDate !== null
+        ) {
+          saveGameData(game_name, count, newPlayDate, user.email);
         } else {
-          console.log("playDate", playDate);
-          console.error("game_name, userId, or playDate is null");
+          console.error("game_name, user.email, or playDate is null");
         }
         setDataSent(true);
       }

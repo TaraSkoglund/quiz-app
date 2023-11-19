@@ -1,12 +1,10 @@
 "use client";
 import { useAuth } from "@/context";
-import { auth } from "@/firebase/config";
 import { getAllGameData } from "@/firebase/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type GameData = {
-  userId: any;
   game_name: string;
   result: number;
   play_date: any;
@@ -14,7 +12,6 @@ type GameData = {
 
 export default function StatisticsPage() {
   const [gameDataList, setGameDataList] = useState<GameData[]>([]);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const { user } = useAuth();
 
   const fetchAllGameData = async () => {
@@ -28,11 +25,6 @@ export default function StatisticsPage() {
 
   useEffect(() => {
     fetchAllGameData();
-
-    const user = auth.currentUser;
-    if (user) {
-      setUserEmail(user.email || null);
-    }
   }, []);
 
   return (
@@ -62,12 +54,7 @@ export default function StatisticsPage() {
                 </div>
               </div>
               <div>
-                <h2 className=" text-base mb-6">
-                  {gameData.userId === user?.uid ? "You" : gameData.userId}
-                  {gameData.userId === user?.uid && userEmail
-                    ? `: ${userEmail}`
-                    : " : N/A"}
-                </h2>
+                <h2>{user?.email || "No email available"}</h2>
               </div>
             </div>
           ))}

@@ -25,14 +25,17 @@ export default function ResultPage() {
     setCorrectCount(count);
     setUserAnswers(storedAnswers);
 
-    if (count === 5 && userId) {
+    if (count === 5) {
       const game_name = localStorage.getItem("game_name");
-      if (game_name !== null) {
+      if (game_name !== null && user?.email) {
         const playDate = new Date();
-        saveGameData(userId, game_name, correctCount, playDate);
+        saveGameData(game_name, count, playDate, user.email);
+        console.log(user.email);
+      } else {
+        console.error("game_name, user.email, or playDate is null");
       }
     }
-  }, [correctCount, userId]);
+  }, [user]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-18 mt-12 font-serif text-center">
